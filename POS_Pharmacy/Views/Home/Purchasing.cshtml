@@ -1,0 +1,424 @@
+﻿@model POS_Pharmacy.Models.PurchasingViewModel
+@{
+    Layout = "";
+    var genericList = ViewBag.GenericDrugList as List<string> ?? new List<string>();
+    var supplierList = ViewBag.SupplierList as List<string> ?? new List<string>();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy POS System - Purchasing Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .theme-bg {
+        background-color: #00716b;
+        }
+
+        .theme-text {
+        color: #00716b;
+        }
+
+        .theme-border {
+        border-color: #00716b;
+        }
+
+        .theme-hover:hover {
+        background-color: #027057;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
+
+    <header class="theme-bg text-white px-6 py-3 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-2">
+            <div class="bg-white text-[#005F54] w-6 h-6 rounded flex items-center justify-center font-black text-lg">
+                ✚
+            </div>
+            <h1 class="text-lg font-bold tracking-wider uppercase flex items-center">
+                PHARMACY POS SYSTEM
+                <span class="text-sm font-normal normal-case ml-3 opacity-95 border-l border-white/30 pl-3">Purchasing Panel</span>
+            </h1>
+        </div>
+        <div class="flex items-center space-x-1.5 text-sm font-medium">
+            <i class="fa-solid fa-truck-ramp-box text-base"></i>
+            <span>PharmaCare Inventory</span>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 space-y-6">
+        <form id="purchasingForm" asp-action="SavePurchase" asp-controller="Home" method="post">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                    <div class="flex items-center space-x-2 border-b pb-3 mb-4">
+                        <i class="fa-solid fa-receipt theme-text"></i>
+                        <h2 class="text-md font-bold text-gray-700 tracking-wider uppercase">1. Purchase Info</h2>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">PO ID (Auto Generated)</label>
+                            <input asp-for="POId" type="text" readonly class="w-full border bg-gray-50 rounded px-3 py-2 text-sm text-gray-500 focus:outline-none" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Transaction Type</label>
+                            <select name="isReturn" class="w-full border rounded px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-teal-600" required>
+                                <option value="">Select Transaction Type</option>
+                                <option value="false">Purchase (Stock In)</option>
+                                <option value="true">Return (Stock Out)</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Received Date</label>
+                            <input asp-for="ReceivedDate" type="date" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                    <div class="flex items-center space-x-2 border-b pb-3 mb-4">
+                        <i class="fa-solid fa-building-user theme-text"></i>
+                        <h2 class="text-md font-bold text-gray-700 tracking-wider uppercase">2. Supplier Info</h2>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Supplier Name</label>
+                            <select asp-for="SupplierName" class="w-full border rounded px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-teal-600" required>
+                                <option value="">Select Supplier</option>
+                                @foreach (var supplier in supplierList)
+                                {
+                                    <option value="@supplier">@supplier</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Supplier Invoice No</label>
+                            <input asp-for="SupplierInvoiceNo" type="text" placeholder="Required for references" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Invoice Date</label>
+                            <input asp-for="InvoiceDate" type="date" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 mb-1">Contact Person</label>
+                            <input asp-for="ContactPerson" type="text" placeholder="Enter Name" class="w-full border bg-gray-50 rounded px-3 py-1.5 text-sm focus:outline-none" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 mb-1">Contact Number</label>
+                            <input asp-for="ContactNumber" type="text" placeholder="Enter Phone No" class="w-full border bg-gray-50 rounded px-3 py-1.5 text-sm focus:outline-none" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mt-6">
+                <div class="flex items-center space-x-2 border-b pb-3 mb-4">
+                    <i class="fa-solid fa-capsules theme-text"></i>
+                    <h2 class="text-md font-bold text-gray-700 tracking-wider uppercase">3. Drug Purchase</h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-11 gap-2 items-end">
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Item Code</label>
+                        <input type="text" id="inputItemCode" placeholder="Code" readonly class="w-full border bg-gray-50 rounded px-2 py-1.5 text-sm text-gray-500 focus:outline-none" />
+                    </div>
+                    <div class="col-span-1 md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Category</label>
+                        <input type="text" id="inputCategory" readonly class="w-full border bg-gray-50 rounded px-2 py-1.5 text-sm text-gray-500 focus:outline-none" />
+                    </div>
+                    <div class="col-span-1 md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Generic Name</label>
+                        <select id="GenericName" onchange="loadDrugDetails()" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-teal-600">
+                            <option value="">Choose Generic Name</option>
+                            @foreach (var name in genericList)
+                            {
+                                <option value="@name">@name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-span-1 md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Brand Name</label>
+                        <select id="BrandName" onchange="assignDoseValue()" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-teal-600">
+                            <option value="">Choose Brand Name</option>
+                        </select>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Dose</label>
+                        <input type="text" id="inputDose" readonly class="w-full border bg-gray-50 rounded px-2 py-1.5 text-sm text-gray-500 focus:outline-none" />
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Quantity Recieved</label>
+                        <input type="number" id="inputQtyRecv" placeholder="Quantity" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Selling Price ($)</label>
+                        <input type="number" id="inputSellingPrice" value="0.00" step="0.01" oninput="calculateCostPrice()" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Discount (%)</label>
+                        <input type="number" id="inputDiscount" value="0.0" step="0.1" oninput="calculateCostPrice()" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-3 pt-3 border-t border-dashed border-gray-100 items-end">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Calculated Cost Price</label>
+                        <input type="text" id="calcCost" value="0.00" readonly class="w-full border bg-gray-50 text-gray-600 rounded px-3 py-1.5 text-sm focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Expiry Date</label>
+                        <input type="month" id="inputExpiry" class="w-full border rounded px-3 py-1.5 text-sm focus:outline-none" />
+                    </div>
+                    <div>
+                        <button type="button" id="btnAddItem" onclick="addPurchaseRow()" class="w-full theme-bg text-white font-semibold text-sm py-2 rounded theme-hover transition duration-150 flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span>Add Purchase Row</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg border border-gray-200 mt-6 shadow-sm bg-white">
+                <table class="w-full border-collapse text-left text-sm text-gray-500">
+                    <thead class="theme-bg text-white text-xs uppercase tracking-wider">
+                        <tr>
+                            <th class="px-4 py-3 font-semibold text-center w-12">#</th>
+                            <th class="px-4 py-3 font-semibold">Item Code</th>
+                            <th class="px-4 py-3 font-semibold text-center">Category</th>
+                            <th class="px-4 py-3 font-semibold text-center">Generic Name</th>
+                            <th class="px-4 py-3 font-semibold text-center">Brand Name</th>
+                            <th class="px-4 py-3 font-semibold text-center">Dose</th>
+                            <th class="px-4 py-3 font-semibold text-center">Quantity Recieved</th>
+                            <th class="px-4 py-3 font-semibold text-center">Selling Price</th>
+                            <th class="px-4 py-3 font-semibold text-center">Discount(%)</th>
+                            <th class="px-4 py-3 font-semibold text-center">Cost Price</th>
+                            <th class="px-4 py-3 font-semibold text-center">Expiry Date</th>
+                            <th class="px-4 py-3 font-semibold text-center">Total($)</th>
+                            <th class="px-4 py-3 font-semibold text-center w-16">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchasingTableBody" class="divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between mt-6 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <span class="text-xs uppercase text-gray-400 font-bold tracking-wider block">Total Transaction Invoice Cost ($)</span>
+                    <span id="txtInvoiceTotal" class="text-3xl font-black text-emerald-700 tracking-tight">0.00</span>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="submit" class="bg-emerald-600 text-white font-bold px-8 py-3 rounded-lg shadow-md hover:bg-emerald-700 transition flex items-center space-x-2 text-base">
+                        <i class="fa-solid fa-boxes-loading text-lg"></i>
+                        <span>Save to Inventory</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Array that hold all items we add to table
+        var purchaseItems = [];
+
+        // Works automatically when user picks a generic name
+        function loadDrugDetails() {
+        var selectedGeneric = document.getElementById("GenericName").value;
+        var itemCodeInput = document.getElementById("inputItemCode");
+        var categoryInput = document.getElementById("inputCategory");
+        var brandSelect = document.getElementById("BrandName");
+        var doseInput = document.getElementById("inputDose");
+
+        // If it's empty, reset all fields to blank
+        if (selectedGeneric == "") {
+        itemCodeInput.value = "";
+        categoryInput.value = "";
+        brandSelect.innerHTML = '<option value="">Choose Brand</option>';
+        doseInput.value = "";
+        return;
+        }
+
+        // Get the url path pointing to HomeController method
+       var url = "@Url.Action("GetDrugsByGeneric", "Home")?genericName=" + encodeURIComponent(selectedGeneric);
+        console.log("Requesting absolute path URL: ", url);
+
+        // Get matching drug data from backend databse
+        fetch(url)
+        .then(response => {
+        if (!response.ok) {
+        throw new Error("HTTP error! Status: " + response.status);
+        }
+        return response.json();
+        })
+        .then(data => {
+        console.log("Database Payload Received Successfully:", data);
+
+        if (data != null) {
+        // Fill item code and category id with database values
+        itemCodeInput.value = data.itemCode || "";
+        categoryInput.value = data.category || "";
+
+        brandSelect.innerHTML = '<option value="">Choose Brand</option>';
+        var brandsList = data.brands || [];
+
+        // Loop through all brands found for the selected drug and add them to dropdown
+        if (brandsList.length > 0) {
+        for (var i = 0; i < brandsList.length; i++) {
+        var brandItem = brandsList[i];
+        var opt = document.createElement("option");
+        var bName = brandItem.brandName || "";
+        var bDose = brandItem.dose || "";
+
+        opt.value = bName;
+        opt.text = bName;
+        // Hides the dose value and shows it when brand is selected
+        opt.setAttribute("data-dose", bDose);
+        brandSelect.appendChild(opt);
+        }
+        } else {
+        var opt = document.createElement("option");
+        opt.value = "";
+        opt.text = "No brands found in stock table";
+        brandSelect.appendChild(opt);
+        }
+
+        // Clear dose and reset price calaculation 
+        doseInput.value = "";
+        calculateCostPrice();
+        }
+        })
+        .catch(error => {
+        console.error("Fetch request failed entirely:", error);
+        });
+        }
+
+        // When user selects a specific brand
+        function assignDoseValue() {
+        var brandSelect = document.getElementById("BrandName");
+        var doseInput = document.getElementById("inputDose");
+        var selectedOption = brandSelect.options[brandSelect.selectedIndex];
+
+        // Read the hidden dose value
+        if (selectedOption && selectedOption.value != "") {
+        var doseAttr = selectedOption.getAttribute("data-dose");
+        doseInput.value = doseAttr ? doseAttr : "";
+        } else {
+        doseInput.value = "";
+        }
+        }
+
+        // Math to calculate cost price after discount percentage
+        function calculateCostPrice() {
+        var sellingPrice = parseFloat(document.getElementById("inputSellingPrice").value) || 0;
+        var discountPercent = parseFloat(document.getElementById("inputDiscount").value) || 0;
+
+        // Calculate discount amount and substract it from selling price
+        var discountAmount = sellingPrice * (discountPercent / 100);
+        var calculatedCost = sellingPrice - discountAmount;
+        // Display the cost to two decimal places
+        document.getElementById("calcCost").value = calculatedCost.toFixed(2);
+        }
+
+        // When user clicks add purchase row
+        function addPurchaseRow() {
+        var code = document.getElementById("inputItemCode").value;
+        var category = document.getElementById("inputCategory").value;
+        var generic = document.getElementById("GenericName").value;
+        var brand = document.getElementById("BrandName").value;
+        var dose = document.getElementById("inputDose").value;
+        var quantity = parseInt(document.getElementById("inputQtyRecv").value) || 0;
+        var price = parseFloat(document.getElementById("inputSellingPrice").value) || 0;
+        var discount = parseFloat(document.getElementById("inputDiscount").value) || 0;
+        var cost = parseFloat(document.getElementById("calcCost").value) || 0;
+        var expiry = document.getElementById("inputExpiry").value;
+
+        // Ensure required fields are filled out
+        if (generic == "" || brand == "" || quantity <= 0) {
+        alert("Please fill out all required fields with valid quantities and prices.");
+        return;
+        }
+
+        var total = quantity * cost;
+
+        // Bundle everythinng into a single row
+        var item = {
+        ItemCode: code,
+        Category: category,
+        GenericName: generic,
+        BrandName: brand,
+        Dose: dose,
+        QtyRecv: quantity,
+        SellingPrice: price,
+        DiscountPercentage: discount,
+        CostPrice: cost,
+        ExpiryDate: expiry,
+        LineTotal: total
+        };
+
+        // Push row items into global array
+        purchaseItems.push(item);
+        refreshTableUiGrid();
+        clearEntryModuleFields();
+        }
+
+        // Delete a specific row from the table
+        function removePurchaseRow(index) {
+        purchaseItems.splice(index, 1);
+        refreshTableUiGrid();
+        }
+
+        // Loops through array list and shows the table rows
+        function refreshTableUiGrid() {
+        var tbody = document.getElementById("purchasingTableBody");
+        tbody.innerHTML = "";
+
+        var entireInvoiceCostSum = 0;
+
+        for (var i = 0; i < purchaseItems.length; i++) {
+        var item = purchaseItems[i];
+        entireInvoiceCostSum += item.LineTotal;
+
+        // Build out the rows so can save data lists
+        var htmlRow = '<tr>' +
+        '<td class="px-4 py-3 text-center">' + (i + 1) + '</td>' +
+        '<td class="px-4 py-3"><input type="hidden" name="PurchaseItems[' + i + '].ItemCode" value="' + item.ItemCode + '" />' + item.ItemCode + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].Category" value="' + item.Category + '" />' + item.Category + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].GenericName" value="' + item.GenericName + '" />' + item.GenericName + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].BrandName" value="' + item.BrandName + '" />' + item.BrandName + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].Dose" value="' + item.Dose + '" />' + item.Dose + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].QtyRecv" value="' + item.QtyRecv + '" />' + item.QtyRecv + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].SellingPrice" value="' + item.SellingPrice + '" />$' + item.SellingPrice.toFixed(2) + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].DiscountPercentage" value="' + item.DiscountPercentage + '" />' + item.DiscountPercentage + '%</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].CostPrice" value="' + item.CostPrice + '" />$' + item.CostPrice.toFixed(2) + '</td>' +
+        '<td class="px-4 py-3 text-center"><input type="hidden" name="PurchaseItems[' + i + '].ExpiryDate" value="' + item.ExpiryDate + '" />' + (item.ExpiryDate ? item.ExpiryDate : 'N/A') + '</td>' +
+        '<td class="px-4 py-3 text-center font-bold text-gray-800"><input type="hidden" name="PurchaseItems[' + i + '].LineTotal" value="' + item.LineTotal + '" />$' + item.LineTotal.toFixed(2) + '</td>' +
+        '<td class="px-4 py-3 text-center"><button type="button" onclick="removePurchaseRow(' + i + ')" class="text-red-500 font-bold"><i class="fa-solid fa-trash-can"></i></button></td>' +
+        '</tr>';
+
+        tbody.innerHTML += htmlRow;
+        }
+
+        // Show the runninng grand total at the bottom of invoice
+        document.getElementById("txtInvoiceTotal").innerText = entireInvoiceCostSum.toFixed(2);
+        }
+
+        // To reset all values back to default values
+        function clearEntryModuleFields() {
+        document.getElementById("GenericName").value = "";
+        document.getElementById("inputItemCode").value = "";
+        document.getElementById("inputCategory").value = "";
+        document.getElementById("BrandName").innerHTML = '<option value="">Choose Brand</option>';
+        document.getElementById("inputDose").value = "";
+        document.getElementById("inputQtyRecv").value = "";
+        document.getElementById("inputSellingPrice").value = "0.00";
+        document.getElementById("inputDiscount").value = "0.0";
+        document.getElementById("calcCost").value = "0.00";
+        document.getElementById("inputExpiry").value = "";
+        }
+    </script>
+</body>
+</html>

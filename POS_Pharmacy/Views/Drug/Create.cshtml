@@ -1,0 +1,147 @@
+﻿@model POS_Pharmacy.Models.Drug
+@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy POS System - Register Drug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .theme-bg {
+        background-color: #00716b;
+        }
+
+        .theme-text {
+        color: #00716b;
+        }
+
+        .theme-border {
+        border-color: #00716b;
+        }
+
+        .theme-hover:hover {
+        background-color: #027057;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
+
+    <header class="theme-bg text-white px-6 py-3 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-2">
+            <div class="bg-white text-[#005F54] w-6 h-6 rounded flex items-center justify-center font-black text-lg">
+                ✚
+            </div>
+            <h1 class="text-lg font-bold tracking-wider uppercase flex items-center">
+                PHARMACY POS SYSTEM
+                <span class="text-sm font-normal normal-case ml-3 opacity-95 border-l border-white/30 pl-3">Drug Registry</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto p-6 mt-6">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="mb-6 p-4 bg-teal-50 border-l-4 border-teal-600 text-teal-900 rounded-r-lg shadow-sm flex items-center space-x-3">
+                <i class="fa-solid fa-circle-check text-teal-600 text-xl"></i>
+                <div>
+                    <span class="font-bold">Success!</span> @TempData["SuccessMessage"]
+                </div>
+            </div>
+        }
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-900 rounded-r-lg shadow-sm">
+                <div class="flex items-center space-x-3 mb-2">
+                    <i class="fa-solid fa-circle-exclamation text-red-500 text-xl"></i>
+                    <span class="font-bold text-md">Registration Encountered An Error:</span>
+                </div>
+                <div class="text-sm list-disc list-inside pl-6 font-medium text-red-700">
+                    @Html.ValidationSummary(false, "")
+                </div>
+            </div>
+        }
+
+        <form action="@Url.Action("Create", "Drug")" method="post" enctype="multipart/form-data" class="space-y-6">
+            @Html.AntiForgeryToken()
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+
+                <div class="flex items-center space-x-2 border-b pb-3 mb-6">
+                    <i class="fa-solid fa-circle-plus theme-text text-lg"></i>
+                    <h2 class="text-md font-bold text-gray-700 tracking-wider uppercase">Register New Drug</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Item Code</label>
+                        <input type="text" name="ItemCode" placeholder="1001" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Category</label>
+                        <input type="text" name="category" placeholder="Category" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Generic Name</label>
+                        <input type="text" name="GenericName" placeholder="Paracetamol" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Brand Name</label>
+                        <input type="text" name="BrandName" placeholder="Panadol" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Dose</label>
+                        <input type="text" name="Dose" placeholder="500mg" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" required />
+                    </div>
+
+                    <div class="sm:col-span-2 mt-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Upload Document File</label>
+
+                        <div class="flex items-center space-x-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+                            <div class="flex-1">
+                                <input type="file"
+                                       id="drugFile"
+                                       name="drugFile"
+                                       class="w-full text-sm text-gray-500 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer"
+                                       accept=".csv, .xlsx, .xls" required />
+                            </div>
+
+                            <button type="submit"
+                                    formaction="@Url.Action("UploadDrugFile", "Drug")"
+                                    formmethod="post"
+                                    formnovalidate="formnovalidate"
+                                    class="bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-lg shadow-md hover:bg-emerald-700 transition flex items-center space-x-2 text-sm whitespace-nowrap">
+                                <i class="fa-solid fa-file-import text-base"></i>
+                                <span>Import Drug Data</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 shadow-sm mt-6">
+                <a href="@Url.Action("Index", "Drug")" class="text-sm font-semibold text-gray-500 hover:text-gray-700 transition flex items-center space-x-1.5 pl-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Catalog</span>
+                </a>
+
+                <button type="submit" class="bg-emerald-600 text-white font-bold px-8 py-2.5 rounded-lg shadow-md hover:bg-emerald-700 transition flex items-center space-x-2 text-sm whitespace-nowrap">
+                    <i class="fa-solid fa-floppy-disk text-base"></i>
+                    <span>Register New Drug</span>
+                </button>
+            </div>
+
+        </form>
+    </main></body>
+</html>
