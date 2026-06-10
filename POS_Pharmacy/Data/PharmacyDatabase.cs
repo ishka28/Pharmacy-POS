@@ -15,6 +15,8 @@ namespace POS_Pharmacy.Data
         public DbSet<StockInfo> Stocks { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<PurchaseInfo> Purchases { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
     }
 }

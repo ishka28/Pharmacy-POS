@@ -9,7 +9,7 @@ namespace POS_Pharmacy.Models
     {
         [Required]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateTime? Date { get; set; } = DateTime.Today;
 
         [Required]
         public string InvoiceNo { get; set; }
@@ -26,14 +26,14 @@ namespace POS_Pharmacy.Models
         public string PatientMobile{ get; set; }
 
         [Required]
-        [DataType (DataType.Date)]
-        public DateTime DOB { get; set; }
-
+        [DataType(DataType.Date)]
+        public DateTime? DOB { get; set; } = DateTime.Today;
+         
         [Required]
         [Display(Name = "Gender")]
-        public decimal Gender { get; set; }
+        public string Gender { get; set; }
 
-        public decimal InvoiceTotal { get; set; }
+        public decimal InvoiceTotal { get; set; } 
 
         public List<BillingItemViewModel> BillingItems { get; set; } = new List<BillingItemViewModel>();
     }
@@ -46,7 +46,7 @@ namespace POS_Pharmacy.Models
         public string Dose { get; set; }
         public string DirectionOfUse { get; set; } // dropdown Nocte, Mane, TDS, SOS, Q4H, Q6H
         public string DurationUnit { get; set; }  // dropdown days weeks months
-        public string DurationValue { get; set; }
+        public int DurationValue { get; set; }
         public string NumberOfPills { get; set; } 
         public string SubTotal { get; set; }
     }
