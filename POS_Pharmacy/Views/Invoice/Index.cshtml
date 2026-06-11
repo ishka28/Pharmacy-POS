@@ -11,21 +11,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pharmacy POS System - Billing Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .theme-bg {background-color: #00716b;}
-        .theme-text {color: #00716b;}
-        .theme-border {border-color: #00716b;}
-        .theme-hover:hover {background-color: #027057;}
+        .theme-bg {
+        background-color: #00716b;
+        }
+
+        .theme-text {
+        color: #00716b;
+        }
+
+        .theme-border {
+        border-color: #00716b;
+        }
+
+        .theme-hover:hover {
+        background-color: #027057;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
 
     <header class="theme-bg text-white px-6 py-3 flex justify-between items-center shadow-sm">
         <div class="flex items-center space-x-2">
-            <div class="bg-white text-[#005F54] w-6 h-6 rounded flex items-center justify-center font-black text-lg">
-                ✚
-            </div>
+            <div class="bg-white text-[#005F54] w-6 h-6 rounded flex items-center justify-center font-black text-lg">✚</div>
             <h1 class="text-lg font-bold tracking-wider uppercase flex items-center">
                 PHARMACY POS SYSTEM
                 <span class="text-sm font-normal normal-case ml-3 opacity-95 border-l border-white/30 pl-3">Billing Panel</span>
@@ -49,11 +58,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Date</label>
-                        <div class="relative flex items-center cursor-pointer" onclick="document.getElementById('Date').showPicker();">
-                            <input type="date" asp-for="Date" id="Date" class="w-full border rounded pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600 cursor-pointer" />
-                            <div class="absolute right-0 top-0 bottom-0 px-3 bg-gray-50 border-l border-gray-200 rounded-r flex items-center pointer-events-none">
-                            </div>
-                        </div>
+                        <input type="date" asp-for="Date" id="Date" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600 cursor-pointer" />
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Invoice No</label>
@@ -72,15 +77,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Patient Name</label>
-                        <input type="text" asp-for="PatientName" id="PatientMobile" placeholder="Enter Patient Name" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" />
+                        <input type="text" asp-for="PatientName" id="PatientName" placeholder="Enter Patient Name" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600" />
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">DOB</label>
-                        <div class="relative flex items-center cursor-pointer" onclick="document.getElementById('DOB').showPicker();">
-                            <input type="date" asp-for="DOB" id="DOB" asp-format="{0:yyyy-MM-dd}" class="w-full border rounded pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600 cursor-pointer" />
-                            <div class="absolute right-0 top-0 bottom-0 px-3 bg-gray-50 border-l border-gray-200 rounded-r flex items-center pointer-events-none">
-                            </div>
-                        </div>
+                        <input type="date" asp-for="DOB" id="DOB" asp-format="{0:yyyy-MM-dd}" class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-600 cursor-pointer" />
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Gender</label>
@@ -101,24 +102,33 @@
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-9 gap-2 items-end">
-                    <div class="col-span-1">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Item Code</label>
-                        <input type="text" id="inputItemCode" placeholder="Enter code" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
-                    </div>
+
                     <div class="col-span-1 md:col-span-2">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Description</label>
-                        <input type="text" id="inputDesc" placeholder="Enter description" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Generic Name</label>
+                        <input type="text" id="txtGeneric" oninput="onGenericChange()" placeholder="Type generic name" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-teal-600" />
                     </div>
+
+                    <div class="col-span-1 md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Brand Name</label>
+                        <select id="ddlBrand" disabled onchange="onBrandChange()" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none disabled:bg-gray-50">
+                            <option value="">Select Brand</option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-1">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Dose</label>
+                        <select id="ddlDose" disabled onchange="onDoseChange()" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none disabled:bg-gray-50">
+                            <option value="">Select Dose</option>
+                        </select>
+                    </div>
+
                     <div class="col-span-1">
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Selling Price ($)</label>
                         <input type="number" id="inputPrice" value="0.00" step="0.01" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
                     </div>
+
                     <div class="col-span-1">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Dose</label>
-                        <input type="text" id="inputDose" placeholder="e.g. 1 Tab" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
-                    </div>
-                    <div class="col-span-1">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Direction of Use</label>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Direction</label>
                         <select id="inputDirection" class="w-full border rounded px-2 py-1.5 text-sm bg-white focus:outline-none">
                             <option value="">Select</option>
                             <option value="Nocte">Nocte</option>
@@ -129,6 +139,7 @@
                             <option value="Q6H">Q6H</option>
                         </select>
                     </div>
+
                     <div class="col-span-1 flex space-x-1">
                         <div class="w-2/3">
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Duration</label>
@@ -140,17 +151,20 @@
                         </div>
                         <div class="w-1/3">
                             <label class="block text-xs font-semibold text-gray-600 mb-1">&nbsp;</label>
-                            <input type="number" id="inputDurationVal" value="0" class="w-full border rounded px-1 py-1.5 text-sm focus:outline-none text-center" />
+                            <input type="number" id="inputDurationVal" min="0" value="0" class="w-full border rounded px-1 py-1.5 text-sm focus:outline-none text-center no-spinner" />
                         </div>
                     </div>
+
                     <div class="col-span-1">
                         <label class="block text-xs font-semibold text-gray-600 mb-1">No. of Pills</label>
-                        <input type="number" id="inputPills" placeholder="e.g. 10" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
+                        <input type="number" id="inputPills" min="0" value="0" placeholder="0" class="w-full border rounded px-2 py-1.5 text-sm focus:outline-none" />
                     </div>
+
                     <div class="col-span-1">
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Sub Total ($)</label>
                         <input type="text" id="inputSubTotal" value="0.00" readonly class="w-full border bg-gray-50 rounded px-2 py-1.5 text-sm text-gray-500 focus:outline-none" />
                     </div>
+
                     <div class="col-span-2 md:col-span-1">
                         <button type="button" id="btnAddItem" class="w-full theme-bg text-white font-semibold text-sm py-1.5 rounded theme-hover transition duration-150 flex items-center justify-center space-x-1">
                             <i class="fa-solid fa-circle-plus"></i>
@@ -165,14 +179,13 @@
                     <thead class="theme-bg text-white text-xs uppercase tracking-wider">
                         <tr>
                             <th class="px-4 py-3 font-semibold text-center w-12">#</th>
-                            <th class="px-4 py-3 font-semibold">Item Code</th>
                             <th class="px-4 py-3 font-semibold">Description</th>
                             <th class="px-4 py-3 font-semibold">Selling Price ($)</th>
                             <th class="px-4 py-3 font-semibold">Dose</th>
                             <th class="px-4 py-3 font-semibold">Direction of Use</th>
                             <th class="px-4 py-3 font-semibold">Duration</th>
-                            <th class="px-4 py-3 font-semibold">Number of Pills</th>
-                            <th class="px-4 py-3 font-semibold">Sub Total ($)</th>
+                            <th class="px-4 py-3 font-semibold text-center">Number of Pills</th>
+                            <th class="px-4 py-3 font-semibold w-32">Sub Total ($)</th>
                             <th class="px-4 py-3 font-semibold text-center w-16">Action</th>
                         </tr>
                     </thead>
@@ -189,17 +202,96 @@
                 <div>
                     <button type="submit" class="bg-emerald-600 text-white font-bold px-8 py-3 rounded-lg shadow-md hover:bg-emerald-700 transition flex items-center space-x-2 text-base">
                         <i class="fa-regular fa-circle-check text-lg"></i>
-                        <span>Complete Invoice</span>
+                        <span>Complete Invoice Transaction</span>
                     </button>
                 </div>
             </div>
         </form>
     </main>
+
     <script>
-        // array to hold billing items before form submission
+        const rawStockDb = @Html.Raw(ViewBag.AllStockJson != null ? ViewBag.AllStockJson : "[]");
         var billingItems = [];
 
-        // Calculate sub total whenever price or pills input changes
+        // 1. Triggers dynamically as the user types into the Generic Name box
+        function onGenericChange() {
+        var typedGeneric = document.getElementById('txtGeneric').value.trim().toLowerCase();
+        var brandDropdown = document.getElementById('ddlBrand');
+        var doseDropdown = document.getElementById('ddlDose');
+
+        // Reset dependent drops immediately
+        brandDropdown.innerHTML = '<option value="">Select Brand</option>';
+        brandDropdown.disabled = true;
+        doseDropdown.innerHTML = '<option value="">Select Dose</option>';
+        doseDropdown.disabled = true;
+        clearActiveInputs();
+
+        if (typedGeneric === "") return;
+
+        // Filter out unique brands that match what was typed
+        var filteredBrands = [...new Set(rawStockDb
+        .filter(s => s.GenericName.toLowerCase() === typedGeneric)
+        .map(s => s.BrandName)
+        )];
+
+        if (filteredBrands.length > 0) {
+        filteredBrands.forEach(brand => {
+        var option = document.createElement('option');
+        option.value = brand;
+        option.text = brand;
+        brandDropdown.appendChild(option);
+        });
+        brandDropdown.disabled = false;
+        }
+        }
+
+        // 2. Triggers when a Brand is selected from the freshly loaded dropdown menu
+        function onBrandChange() {
+        var typedGeneric = document.getElementById('txtGeneric').value.trim().toLowerCase();
+        var selectedBrand = document.getElementById('ddlBrand').value;
+        var doseDropdown = document.getElementById('ddlDose');
+
+        doseDropdown.innerHTML = '<option value="">Select Dose</option>';
+        doseDropdown.disabled = true;
+        clearActiveInputs();
+
+        if (!selectedBrand) return;
+
+        var filteredRecords = rawStockDb.filter(s =>
+        s.GenericName.toLowerCase() === typedGeneric &&
+        s.BrandName === selectedBrand
+        );
+
+        filteredRecords.forEach(stock => {
+        var option = document.createElement('option');
+        option.value = stock.StockId || stock.stockId;
+        var exactDose = stock.Dose || stock.dose || "N/A";
+        option.text = exactDose;
+        option.setAttribute('data-dose', exactDose);
+        option.setAttribute('data-price', stock.SellPrice || stock.sellPrice || 0);
+
+        doseDropdown.appendChild(option);
+        });
+
+        doseDropdown.disabled = false;
+        }
+
+        // 3. Triggers when a Dose option is chosen
+        function onDoseChange() {
+        var doseDropdown = document.getElementById('ddlDose');
+        var selectedOption = doseDropdown.options[doseDropdown.selectedIndex];
+
+        if (!selectedOption.value) {
+        clearActiveInputs();
+        return;
+        }
+
+        var price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        document.getElementById('inputPrice').value = price.toFixed(2);
+
+        calculateSubTotal();
+        }
+
         function calculateSubTotal() {
         var price = parseFloat(document.getElementById('inputPrice').value) || 0;
         var pills = parseInt(document.getElementById('inputPills').value) || 0;
@@ -207,78 +299,76 @@
         document.getElementById('inputSubTotal').value = subTotal.toFixed(2);
         }
 
-        // Add event listeners to price and pills inputs
         document.getElementById('inputPrice').addEventListener('input', calculateSubTotal);
         document.getElementById('inputPills').addEventListener('input', calculateSubTotal);
 
-        //  Add item to billing table
         function addBillingRow() {
-        var itemCode = document.getElementById('inputItemCode').value.trim();
-        var description = document.getElementById('inputDesc').value.trim();
+        var genericName = document.getElementById('txtGeneric').value.trim();
+
+        var brandSelect = document.getElementById('ddlBrand');
+        var brandName = brandSelect.options[brandSelect.selectedIndex]?.value || "";
+
+        var doseSelect = document.getElementById('ddlDose');
+        var stockId = doseSelect.value;
+        var dose = doseSelect.options[doseSelect.selectedIndex]?.getAttribute('data-dose') || "";
+
         var price = parseFloat(document.getElementById('inputPrice').value) || 0;
-        var dose = document.getElementById('inputDose').value.trim();
         var direction = document.getElementById('inputDirection').value;
         var durationUnit = document.getElementById('inputDurationUnit').value;
         var durationVal = parseInt(document.getElementById('inputDurationVal').value) || 0;
         var pills = parseInt(document.getElementById('inputPills').value) || 0;
         var subTotal = parseFloat(document.getElementById('inputSubTotal').value) || 0;
 
-        // Basic validation
-        if (itemCode ==="" || description ==="" || pills <= 0) {
-        alert('Please fill in all required fields with valid values.');
+        if (genericName === "" || brandName === "" || stockId === "" || pills <= 0) {
+        alert('Please enter a Generic Name, choose a Brand, Dose, and enter Pills count.');
         return;
         }
 
-        // Create billing item object and add to array (BillingViewModel)
+        // Clean layout description containing Brand, Generic, and Dose
+        var completeDescription = `${brandName} (${genericName}) - ${dose}`;
+
         var Item = {
-        ItemCode: itemCode,
-        Description: description,
-        SellingPrice: price.toFixed(2).toString(), // Fixed: explicitly converted to string for C# model matching
+        ItemCode: stockId,
+        Description: completeDescription,
+        SellingPrice: price.toFixed(2).toString(),
         Dose: dose,
         DirectionOfUse: direction,
         DurationUnit: durationUnit,
         DurationValue: durationVal,
-        NumberOfPills: pills.toString(), // Fixed: explicitly converted to string for C# model matching
-        SubTotal: subTotal.toFixed(2).toString() // Fixed: explicitly converted to string for C# model matching
+        NumberOfPills: pills.toString(),
+        SubTotal: subTotal.toFixed(2).toString()
         };
 
-        // Add item to billing items array
         billingItems.push(Item);
         refreshBillingTable();
         clearInputFields();
         }
 
-        // Attach the add button to click handler function
         document.getElementById('btnAddItem').addEventListener('click', addBillingRow);
 
-        // Delete billing item from table
         function removeBillingRow(index) {
         billingItems.splice(index, 1);
         refreshBillingTable();
         }
 
-        // Loop through billing items and refresh the table body
         function refreshBillingTable() {
         var tableBody = document.getElementById('billingTableBody');
         tableBody.innerHTML = "";
         var totalInvoiceSum = 0;
 
-        // Loop through billing items and create table rows
         for (var i = 0; i < billingItems.length; i++) {
         var item = billingItems[i];
         totalInvoiceSum += parseFloat(item.SubTotal) || 0;
 
-        // Create HTML for each billing item row with hidden inputs for form submission
         var htmlRow = '<tr class="hover:bg-gray-50">' +
         '<td class="px-4 py-3 text-center font-medium text-gray-900">' + (i + 1) + '</td>' +
-        '<td class="px-4 py-3 font-medium text-gray-900">' + item.ItemCode + '</td>' +
-        '<td class="px-4 py-3 text-gray-700">' + item.Description + '</td>' +
-        '<td class="px-4 py-3 text-right pr-8">' + parseFloat(item.SellingPrice).toFixed(2) + '</td>' +
+        '<td class="px-4 py-3 font-medium text-gray-800">' + item.Description + '</td>' +
+        '<td class="px-4 py-3">' + parseFloat(item.SellingPrice).toFixed(2) + '</td>' +
         '<td class="px-4 py-3">' + item.Dose + '</td>' +
         '<td class="px-4 py-3"><span class="bg-teal-50 text-teal-700 px-2 py-0.5 rounded text-xs font-semibold border border-teal-200">' + item.DirectionOfUse + '</span></td>' +
-        '<td class="px-4 py-3 text-gray-700">' + item.DurationValue + ' ' + item.DurationUnit + '</td>' +
+        '<td class="px-4 py-3">' + item.DurationValue + ' ' + item.DurationUnit + '</td>' +
         '<td class="px-4 py-3 text-center">' + item.NumberOfPills + '</td>' +
-        '<td class="px-4 py-3 text-right pr-8 font-semibold text-gray-900">' + parseFloat(item.SubTotal).toFixed(2) + '</td>' +
+        '<td class="px-4 py-3 font-semibold text-gray-900">' + parseFloat(item.SubTotal).toFixed(2) + '</td>' +
         '<td class="px-4 py-3 text-center">' +
         '<button type="button" onclick="removeBillingRow(' + i + ')" class="text-red-500 hover:text-red-700 transition"><i class="fa-regular fa-trash-can text-lg"></i></button>' +
         '</td>' +
@@ -287,95 +377,74 @@
         tableBody.innerHTML += htmlRow;
         }
 
-        // Update total invoice sum display
         document.getElementById('txtInvoiceTotal').innerText = totalInvoiceSum.toFixed(2);
         }
 
-        // Clear input fields after adding an item
         function clearInputFields() {
-        document.getElementById('inputItemCode').value = "";
-        document.getElementById('inputDesc').value = "";
+        document.getElementById('txtGeneric').value = "";
+        document.getElementById('ddlBrand').innerHTML = '<option value="">Select Brand</option>';
+        document.getElementById('ddlBrand').disabled = true;
+        document.getElementById('ddlDose').innerHTML = '<option value="">Select Dose</option>';
+        document.getElementById('ddlDose').disabled = true;
         document.getElementById('inputPrice').value = "0.00";
-        document.getElementById('inputDose').value = "";
         document.getElementById('inputDirection').value = "";
         document.getElementById('inputDurationUnit').value = "Days";
         document.getElementById('inputDurationVal').value = "0";
-        document.getElementById('inputPills').value = "0";
+        document.getElementById('inputPills').value = "";
+        document.getElementById('inputSubTotal').value = "0.00";
+        }
+
+        function clearActiveInputs() {
+        document.getElementById('inputPrice').value = "0.00";
         document.getElementById('inputSubTotal').value = "0.00";
         }
 
         document.getElementById('posForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
         if (billingItems.length === 0) {
-        alert('Please add at least one billing item before submitting the invoice.');
+        alert('Please add items to compile the invoice document grid structure first.');
         return;
         }
 
-        // Safe DOM element references
-        var invoiceNoEl = document.getElementById('InvoiceNo') || document.querySelector('input[name="InvoiceNo"]');
-        var dateEl = document.getElementById('Date');
-        var doctorEl = document.getElementById('DoctorName') || document.querySelector('input[name="DoctorName"]');
-        var patientEl = document.getElementById('PatientName') || document.querySelector('input[name="PatientName"]');
-        var mobileEl = document.getElementById('PatientMobile') || document.querySelector('input[name="PatientMobile"]');
-        var dobEl = document.getElementById('DOB');
-        var genderEl = document.getElementById('Gender') || document.querySelector('select[name="Gender"]');
-        var totalEl = document.getElementById('txtInvoiceTotal');
-
         var postData = {
-        InvoiceNo: invoiceNoEl ? invoiceNoEl.value : "",
-        Date: (dateEl && dateEl.value) ? dateEl.value : new Date().toISOString().split('T')[0],
-        DoctorName: doctorEl ? doctorEl.value : "",
-        PatientName: patientEl ? patientEl.value : "",
-        PatientMobile: mobileEl ? mobileEl.value : "",
-        DOB: (dobEl && dobEl.value) ? dobEl.value : new Date().toISOString().split('T')[0],
-        Gender: genderEl ? genderEl.value : "",
-        InvoiceTotal: totalEl ? parseFloat(totalEl.innerText) || 0 : 0,
+        InvoiceNo: document.getElementById('InvoiceNo').value,
+        Date: document.getElementById('Date').value || new Date().toISOString().split('T')[0],
+        DoctorName: document.getElementById('DoctorName').value,
+        PatientName: document.getElementById('PatientName').value,
+        PatientMobile: document.getElementById('PatientMobile').value,
+        DOB: document.getElementById('DOB').value || new Date().toISOString().split('T')[0],
+        Gender: document.getElementById('Gender').value,
+        InvoiceTotal: parseFloat(document.getElementById('txtInvoiceTotal').innerText) || 0,
         BillingItems: billingItems
         };
 
-        // Prepare data and send to server using Fetch API
         fetch('Invoice/SaveInvoice', {
         method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postData)
         })
-        .then(response => {
-        if (!response.ok) {
-        return response.text().then(text => {
-        console.error("Server Error Details: ", text);
-        throw new Error("Validation Error");
-        });
-        }
-        return response.json();
-        })
-
+        .then(response => response.json())
         .then(data => {
         if (data.success) {
-        alert("Invoice saved successfully!");
-        billingItems = []; // Clear billing items array
-        refreshBillingTable(); // Refresh table to clear items
+        alert("Invoice generated and stock updated successfully!");
+        billingItems = [];
+        refreshBillingTable();
+        clearInputFields();
 
-        if(document.getElementById('PatientName')) document.getElementById('PatientName').value = "";
-        if(document.getElementById('PatientMobile')) document.getElementById('PatientMobile').value = "";
-        if(document.getElementById('DOB')) document.getElementById('DOB').value = "";
-        if(document.getElementById('Gender')) document.getElementById('Gender').value = "";
-        if(document.getElementById('DoctorName')) document.getElementById('DoctorName').value = "";
-
-        var invNoInput = document.getElementById('InvoiceNo') || document.querySelector('input[asp-for="InvoiceNo"]') || invoiceNoEl;
-        if (invNoInput) {
-        invNoInput.value = data.newInvoiceNo;
-        }
-        }
-        else {
-        alert(data.message); 
+        document.getElementById('PatientName').value = "";
+        document.getElementById('PatientMobile').value = "";
+        document.getElementById('DOB').value = "";
+        document.getElementById('Gender').value = "";
+        document.getElementById('DoctorName').value = "";
+        document.getElementById('InvoiceNo').value = data.newInvoiceNo;
+        } else {
+        alert(data.message);
         }
         })
         .catch(error => {
-        console.error("Transmission failed:", error);
-        alert("An error occurred while saving the invoice. Please try again.");
+        console.error("Error saving document:", error);
+        alert("An operational failure occurred processing the submission loop sequence.");
         });
         });
     </script>
