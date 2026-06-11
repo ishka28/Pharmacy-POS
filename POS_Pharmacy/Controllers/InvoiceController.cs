@@ -40,14 +40,13 @@ namespace POS_Pharmacy.Controllers
                                  SellPrice = subStock != null ? subStock.SellPrice : 0
                              }).ToList();
 
-            // extract unique generic names for your html autocomplete textbox datalist
+            // extract unique generic names 
             ViewBag.GenericNames = stockData
                                     .Select(s => s.GenericName)
                                     .Distinct()
                                     .OrderBy(g => g)
                                     .ToList();
 
-            // convert the joined results list to a json string for your frontend javascript
             ViewBag.AllStockJson = JsonSerializer.Serialize(stockData);
 
             // load a fresh view model with an automated tracking invoice number
@@ -73,12 +72,12 @@ namespace POS_Pharmacy.Controllers
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // save parent invoice record into invoice_info table
+                // save invoice record into invoice table
                 Invoice mainInvoice = new Invoice
                 {
                     InvoiceNumber = model.InvoiceNo,
                     InvoiceDate = model.Date ?? DateTime.Today,
-                    DoctorName = model.DoctorName ?? "Self",
+                    DoctorName = model.DoctorName,
                     PatientName = model.PatientName,
                     PatientMobile = model.PatientMobile,
                     PatientDOB = model.DOB ?? DateTime.Today,
@@ -125,7 +124,7 @@ namespace POS_Pharmacy.Controllers
                         }
                     }
 
-                    // create item details row linked to invoice_items_info table
+                    // create item details row+
                     InvoiceItem itemRow = new InvoiceItem
                     {
                         InvoiceId = mainInvoice.InvoiceId,
